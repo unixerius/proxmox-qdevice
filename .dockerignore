@@ -1,0 +1,6 @@
+.git
+.github
+.gitmessage
+Dockerfile
+README.md
+docker-compose.yml
