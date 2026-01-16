@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [testing]
+    branches: [master, testing]
   pull_request:
     branches: [master, testing]
 
@@ -64,7 +64,7 @@ jobs:
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
-        push: true
+        push: ${{ vars.IMAGEPUSH }}
         provenance: mode=max
         sbom: true
         platforms: ${{matrix.platforms}}
