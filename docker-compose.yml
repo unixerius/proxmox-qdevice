@@ -1,7 +1,7 @@
 services:
   qnetd:
     container_name: proxmox-qdevice
-    image: bcleonard/proxmox-qdevice:v2.0
+    image: unixerius/proxmox-qdevice:latest
     build: .
     ports:
       - "22:22"
