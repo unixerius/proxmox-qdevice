@@ -76,7 +76,7 @@ jobs:
         tags: |
           type=raw,priority=1000,value=${{matrix.debianver}}
           type=schedule,priority=800,pattern={{date 'YYYYMMDD'}},prefix=${{matrix.debianver}}
-          type=sha,priority=400,prefix=${{matrix.debianver}}
+          type=sha,priority=400,prefix=${{matrix.debianver}}-
         flavor: |
           latest=auto
 
