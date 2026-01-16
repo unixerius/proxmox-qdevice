@@ -1,4 +1,4 @@
-FROM debian:trixie-slim
+FROM --platform=$BUILDPLATFORM debian:trixie-slim
 
 RUN apt update \
     && apt -y upgrade \
