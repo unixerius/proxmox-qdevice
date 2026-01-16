@@ -79,7 +79,6 @@ jobs:
           type=sha,priority=400,prefix=${{matrix.debianver}}
         flavor: |
           latest=auto
-          prefix=${{matrix.debianver}},onlatest=true
 
     - name: Push the Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
