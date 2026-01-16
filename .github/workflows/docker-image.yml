@@ -73,14 +73,3 @@ jobs:
           ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
           ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
 
-    - name: Docker Scout
-      id: docker-scout
-      uses: docker/scout-action@v1
-      with:
-        #command: quickview,cves,recommendations
-        command: quickview,cves
-        image: ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
-        ignore-unchanged: true
-        only-severities: critical,high
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-
