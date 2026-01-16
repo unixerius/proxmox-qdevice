@@ -47,6 +47,8 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         push: false
-        tags: unixerius/proxmox-qdevice:latest
+        tags: |
+          unixerius/proxmox-qdevice:latest
+          ghcr.io/unixerius/proxmox-qdevice:latest
         platforms: linux/amd64,linux/arm64
 
