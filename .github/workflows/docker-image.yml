@@ -2,9 +2,11 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [testing]
+    branches: [master, testing]
   pull_request:
     branches: [master, testing]
+  schedule:
+    cron: "* * * * 6"
 
 env:
   registry: unixerius
@@ -15,6 +17,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ github.ref_name }}
 
     strategy:
       matrix:
@@ -60,16 +65,29 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          ${{ env.registry }}/${{ env.image }}
+          ghcr.io/${{ env.registry }}/${{ env.image }}
+        tags: |
+          type=schedule,pattern={{date 'YYYYMMDD'}}
+          type=sha
+        flavor: |
+          latest=auto
+          prefix=${{matrix.debianver}},onlatest=true
+
     - name: Push the Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
-        push: true
+        push: ${{ vars.IMAGEPUSH }}
         provenance: mode=max
         sbom: true
         platforms: ${{matrix.platforms}}
         file: Dockerfile-${{matrix.debianver}}
-        tags: |
-          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
-          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+        tags: ${{ steps.meta.outputs.tags }}
 
