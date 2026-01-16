@@ -61,3 +61,13 @@ jobs:
           unixerius/proxmox-qdevice:latest
           ghcr.io/unixerius/proxmox-qdevice:latest
 
+    - name: Docker Scout
+      id: docker-scout
+      uses: docker/scout-action@v1
+      with:
+        command: quickview,cves,recommendations
+        image: ghcr.io/unixerius/proxmox-qdevice:latest
+        ignore-unchanged: true
+        only-severities: critical,high,medium
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
