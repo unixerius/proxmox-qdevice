@@ -63,6 +63,18 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        # list of Docker images to use as base name for tags
+        images: |
+          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+        tags: |
+          type=schedule,pattern={{date 'YYYYMMDD'}}
+          type=sha
+
     - name: Push the Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
@@ -72,7 +84,5 @@ jobs:
         sbom: true
         platforms: ${{matrix.platforms}}
         file: Dockerfile-${{matrix.debianver}}
-        tags: |
-          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
-          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+        tags: ${{ steps.meta.outputs.tags }}
 
