@@ -11,6 +11,7 @@ on:
 env:
   registry: unixerius
   image: proxmox-qdevice
+  platforms: linux/amd64,linux/arm64
 
 jobs:
 
@@ -80,20 +81,6 @@ jobs:
         flavor: |
           latest=auto
 
-    - name: Push the Trixie Docker image
-      if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
-      uses: docker/build-push-action@v6
-      with:
-        push: ${{ vars.IMAGEPUSH }}
-        provenance: mode=max
-        sbom: true
-        platforms: ${{matrix.platforms}}
-        file: Dockerfile-trixie
-        #tags: ${{ steps.meta.outputs.tags }}
-        tags: |
-          ${{ env.registry }}/${{ env.image }}:trixie
-          ghcr.io/${{ env.registry }}/${{ env.image }}:trixie
-
     - name: Push the Bookworm Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
@@ -101,10 +88,10 @@ jobs:
         push: ${{ vars.IMAGEPUSH }}
         provenance: mode=max
         sbom: true
-        platforms: ${{matrix.platforms}}
-        file: Dockerfile-bookworm
+        platforms: ${{env.platforms}}
+        file: Dockerfile-${{matrix.debianver}}
         #tags: ${{ steps.meta.outputs.tags }}
         tags: |
-          ${{ env.registry }}/${{ env.image }}:bookworm
-          ghcr.io/${{ env.registry }}/${{ env.image }}:bookworm
+          ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+          ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
 
