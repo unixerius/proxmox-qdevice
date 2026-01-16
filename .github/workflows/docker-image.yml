@@ -75,12 +75,12 @@ jobs:
           ghcr.io/${{ env.registry }}/${{ env.image }}
         tags: |
           type=raw,priority=1000,value=${{matrix.debianver}}
-          type=schedule,enable,false,priority=800,pattern={{date 'YYYYMMDD'}},prefix=${{matrix.debianver}}-
-          type=sha,enable=false,priority=400,prefix=${{matrix.debianver}}-
+          type=schedule,priority=800,pattern={{date 'YYYYMMDD'}},prefix=${{matrix.debianver}}-
+          type=sha,priority=400,prefix=${{matrix.debianver}}-
         flavor: |
           latest=auto
 
-    - name: Push the Docker image
+    - name: Push the Trixie Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
@@ -88,9 +88,23 @@ jobs:
         provenance: mode=max
         sbom: true
         platforms: ${{matrix.platforms}}
-        file: Dockerfile-${{matrix.debianver}}
+        file: Dockerfile-trixie
         #tags: ${{ steps.meta.outputs.tags }}
         tags: |
-          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
-          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+          ${{ env.registry }}/${{ env.image }}:trixie
+          ghcr.io/${{ env.registry }}/${{ env.image }}:trixie
+
+    - name: Push the Bookworm Docker image
+      if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
+      uses: docker/build-push-action@v6
+      with:
+        push: ${{ vars.IMAGEPUSH }}
+        provenance: mode=max
+        sbom: true
+        platforms: ${{matrix.platforms}}
+        file: Dockerfile-bookworm
+        #tags: ${{ steps.meta.outputs.tags }}
+        tags: |
+          ${{ env.registry }}/${{ env.image }}:bookworm
+          ghcr.io/${{ env.registry }}/${{ env.image }}:bookworm
 
