@@ -79,8 +79,8 @@ jobs:
       with:
         #command: quickview,cves,recommendations
         command: quickview,cves
-        image: ghcr.io/unixerius/proxmox-qdevice:latest
+        image: ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
         ignore-unchanged: true
-        only-severities: critical,high,medium
+        only-severities: critical,high
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
