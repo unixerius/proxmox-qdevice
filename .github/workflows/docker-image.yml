@@ -80,7 +80,7 @@ jobs:
         flavor: |
           latest=auto
 
-    - name: Push the Bookworm Docker image
+    - name: Build and push the Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
@@ -89,8 +89,8 @@ jobs:
         sbom: true
         platforms: ${{env.platforms}}
         file: Dockerfile-${{matrix.debianver}}
-        tags: ${{ steps.meta.outputs.tags }}
-        #tags: |
-        #  ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
-        #  ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+        #tags: ${{ steps.meta.outputs.tags }}
+        tags: |
+          ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+          ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
 
