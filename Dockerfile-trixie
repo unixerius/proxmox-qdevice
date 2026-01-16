@@ -1,4 +1,5 @@
-FROM dhi.io/debian-base:trixie
+#FROM dhi.io/debian-base:trixie
+FROM debian:trixie-slim
 
 RUN apt update \
     && apt -y upgrade \
