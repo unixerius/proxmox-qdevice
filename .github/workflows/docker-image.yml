@@ -53,9 +53,11 @@ jobs:
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
-        push: false
+        push: true
+        provenance: mode=max
+        sbom: true
+        platforms: linux/amd64,linux/arm64
         tags: |
           unixerius/proxmox-qdevice:latest
           ghcr.io/unixerius/proxmox-qdevice:latest
-        platforms: linux/amd64,linux/arm64
 

@@ -1,8 +1,10 @@
 # Proxmox Qdevice
 
+This repository is based on original [work by Bradley Leonard](https://github.com/bcleonard/proxmox-qdevice). Many thanks to his hard work!
+
 This repository will allow you build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allow you to configure a qdevice for an external vote.
 
-Normally running an even number of servers in a cluster isn't a problem, but I've had situations where I've booted both promox servers at the same time.  In that case, the first server to come online doesn't have a quarum (1 of 2) so the images won't start.  The 2nd server will (2 of 2).  With an external qdevice thats already up, the first device to come up has quarom (2 of 3).  
+Normally running an even number of servers in a cluster isn't a problem, but I've had situations where I've booted both proxmox servers at the same time.  In that case, the first server to come online doesn't have a quarum (1 of 2) so the images won't start.  The 2nd server will (2 of 2).  With an external qdevice thats already up, the first device to come up has quarom (2 of 3).  
 
 For more information on proxmmox clusters, external qdevices, and how to configure/use them, go [here](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support).
 
@@ -10,7 +12,7 @@ Run this container on a device that is *NOT* a virtual instance on one of your p
 
 ## Wiki
 
-A wiki has been created [here](https://github.com/bcleonard/proxmox-qdevice/wiki) which contains all kinds of information.
+Bradley's original wiki [can be found here](https://github.com/bcleonard/proxmox-qdevice/wiki) which contains all kinds of information on configuring this container.
 
 ## Requirements/Prerequisites
 
@@ -18,16 +20,16 @@ Please check the [wiki](https://github.com/bcleonard/proxmox-qdevice/wiki#pre-re
 
 ## Install:
 
-This repo is designed to run from either docker compose or a container manager, like Portainer.
+This container is designed to run from either Docker Compose or a container manager, like Portainer.
 
 ## Configuration:
 
 Modify the docker-compose.yml file.   Make sure to change:
 
 * Environment Variable NEW_ROOT_PASSWORD
-* location of your corosync-data (so you can keep your configuration between restarts, etc.)
-* hostname 
-* local network information
+* Location of your corosync-data (so you can keep your configuration between restarts, etc.)
+* Hostname 
+* Local network information
    parent (the ethernet device to bind macvlan)  
    ipv4_address  
    subnet  
@@ -40,7 +42,7 @@ You can either run the command:
 
 `docker compose up -d`
 
-or cut and past the docker-compose.yml into portainer.io as a stack and then deploy.
+Or cut and paste the docker-compose.yml into portainer.io as a stack and then deploy.
 
 ## Tested as working on:
 
@@ -51,7 +53,7 @@ or cut and past the docker-compose.yml into portainer.io as a stack and then dep
 
 ## Problems & Troubleshooting:
 
-* You can find the most up to date information on issues, known problems and troubleshooting by reviewing the [issues](https://github.com/bcleonard/proxmox-qdevice/issues) and what is [not supported](https://github.com/bcleonard/proxmox-qdevice/wiki#whats-not-supported).
+* You can find the most up to date information on issues, known problems and troubleshooting by reviewing the [issues](https://github.com/unixerius/proxmox-qdevice/issues).
 
 ## Security Implications:
 
@@ -62,7 +64,7 @@ This container installs and configures a sshd server that permits root logins.  
 
 Please note that all of the ways listed above to set the environment above should survive the recreation of the container.
 
-An alternative would be to **NOT SET** the password at all and change it after the container has started and is running.  Please note that this method will not survive the recreation of the container.  This means you have to change the passwor manually every time you upgrade and/or recreate the container.  To change the password after the container has started, do the following:
+An alternative would be to **NOT SET** the password at all and change it after the container has started and is running.  Please note that this method will not survive the recreation of the container.  This means you have to change the password manually every time you upgrade and/or recreate the container.  To change the password after the container has started, do the following:
 
 ```bash
 sudo docker exec -it proxmox-qdevice /bin/bash
