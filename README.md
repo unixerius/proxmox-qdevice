@@ -1,5 +1,9 @@
 # Proxmox Qdevice
 
+[![CodeQL](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql)
+
+[![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml)
+
 This repository will allow you build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allow you to configure a qdevice for an external vote.
 
 Normally running an even number of servers in a cluster isn't a problem, but I've had situations where I've booted both proxmox servers at the same time.  In that case, the first server to come online doesn't have a quorum (1 of 2) so the virtual machines and containers won't start.  With an external qdevice thats already up, the first device to come up has quorum (2 of 3).  
