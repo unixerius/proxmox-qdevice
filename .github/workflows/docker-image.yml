@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [master, testing]
   schedule:
-    cron: "* * * * 6"
+    - cron: "* * * * 6"
 
 env:
   registry: unixerius
