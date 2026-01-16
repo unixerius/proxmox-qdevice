@@ -16,6 +16,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    environment:
+      name: ${{ github.ref_name }}
+
     strategy:
       matrix:
         debianver: [bookworm, trixie]
