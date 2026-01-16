@@ -74,8 +74,9 @@ jobs:
           ${{ env.registry }}/${{ env.image }}
           ghcr.io/${{ env.registry }}/${{ env.image }}
         tags: |
-          type=schedule,pattern={{date 'YYYYMMDD'}}
-          type=sha
+          type=raw,priority=1000,value=${{matrix.debianver}}
+          type=schedule,priority=800,pattern={{date 'YYYYMMDD'}},prefix=${{matrix.debianver}}
+          type=sha,priority=400,prefix=${{matrix.debianver}}
         flavor: |
           latest=auto
           prefix=${{matrix.debianver}},onlatest=true
