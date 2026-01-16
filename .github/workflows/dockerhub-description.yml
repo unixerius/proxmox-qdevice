@@ -1,0 +1,23 @@
+name: Update Docker Hub Description
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - README.md
+      - .github/workflows/dockerhub-description.yml
+jobs:
+  dockerHubDescription:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - name: Docker Hub Description
+      uses: peter-evans/dockerhub-description@v5
+      with:
+        username: ${{ secrets.DHI_USER }}
+        password: ${{ secrets.DHI_TOKEN }}
+        repository: unixerius/proxmox-qdevice
+        short-description: "Cross-platform container image for the Corosync Quorum Device (QDevice), based on modern hardened parent images."
+
