@@ -4,9 +4,7 @@
 
 [![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml)
 
-This repository will allow you build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allow you to configure a qdevice for an external vote.
-
-Normally running an even number of servers in a cluster isn't a problem, but I've had situations where I've booted both proxmox servers at the same time.  In that case, the first server to come online doesn't have a quorum (1 of 2) so the virtual machines and containers won't start.  With an external qdevice thats already up, the first device to come up has quorum (2 of 3).  
+This repository allows you to build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allow you to configure a qdevice for an external vote.
 
 For more information on proxmmox clusters, external qdevices, and how to configure/use them, go [here](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support).
 
@@ -23,49 +21,6 @@ The image contains a shell script and a Supervisord configuration created by thi
 
 Why a fork? The upstream project hasn't had an update in a year and it lacks weekly builds of the parent image, thus opening up your environment to long-lived vulnerabilities. 
 
-
-## Install:
-
-This container is designed to run from either Docker Compose or a container manager, like Portainer.
-
-## Configuration:
-
-Modify the docker-compose.yml file.   Make sure to change:
-
-* Environment Variable NEW_ROOT_PASSWORD.
-* Location of your corosync-data (so you can keep your configuration between restarts, etc.).
-* Hostname .
-* Local network information.
-   parent (the ethernet device to bind macvlan)  
-   ipv4_address  
-   subnet  
-   ip_range  
-   gateway
-
-## Running / Deploying:
-
-You can either run the command:
-
-`docker compose up -d`
-
-Or cut and paste the docker-compose.yml into portainer.io as a stack and then deploy.
-
-## Security Implications:
-
-This container installs and configures a sshd server that permits root logins.  Proxmox runs in the same configuration.  Upon startup, if the environment variable **NEW_ROOT_PASSWORD** exists the root password will be set to the value of that variable upon boot.   You can specify what the root password should be setting the value of **NEW_ROOT_PASSWORD** to a password in one of the following ways:
-
-1) If you are using a container manager, such as portainer, set the environment variable **NEW_ROOT_PASSWORD** to your specified root password.  This variable should get passed to the container.
-2) Follow one of the Docker provided ways documented in how to ["Set environment variables within your container's environment"](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/).  Please note that one of the ways described is setting the password in the docker-compose.yml (or the stack) in the environment section (i.e. hardcoding it).   If you hardcode the password like this, you can expose the password.  You have been warned.
-
-Please note that all of the ways listed above to set the environment above should survive the recreation of the container.
-
-> [!IMPORTANT]
->
-> ## A note on `latest` and `beta`:
->
-> It is not recommended to use the `latest` (`unixerius/proxmox-qdevice`, `unixerius/proxmox-qdevice:latest`) tag for production setups.
->
-> [Those tags point](https://hub.docker.com/r/unixerius/proxmox-qdevice/tags) might not point to the latest commit in the `master` branch. They do not carry any promise of stability, and using them will probably put your proxmox-qdevice setup at risk of experiencing uncontrolled updates to non backward compatible versions (or versions with breaking changes). You should always specify the version you want to use explicitly to ensure your setup doesn't break when the image is updated.
 
 ## Acknowledgements:
 
