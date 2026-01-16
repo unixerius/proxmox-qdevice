@@ -69,11 +69,14 @@ jobs:
       with:
         # list of Docker images to use as base name for tags
         images: |
-          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
-          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+          ${{ env.registry }}/${{ env.image }}
+          ghcr.io/${{ env.registry }}/${{ env.image }}
         tags: |
           type=schedule,pattern={{date 'YYYYMMDD'}}
           type=sha
+        flavor: |
+          latest=auto
+          prefix=${{matrix.debianver}},onlatest=true
 
     - name: Push the Docker image
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
