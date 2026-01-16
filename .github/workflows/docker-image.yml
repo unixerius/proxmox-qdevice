@@ -6,15 +6,25 @@ on:
   pull_request:
     branches: [master, testing]
 
+env:
+  registry: unixerius
+  image: proxmox-qdevice
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        debianver: [bookworm, trixie]
+        platforms: [linux/amd64, linux/arm64]
+
     permissions:
       contents: read
       packages: write
+      attestations: write
 
     steps:
     - name: Checkout sources
@@ -56,10 +66,11 @@ jobs:
         push: true
         provenance: mode=max
         sbom: true
-        platforms: linux/amd64,linux/arm64
+        platforms: ${{matrix.platforms}}
+        file: Dockerfile-${{matrix.debianver}}
         tags: |
-          unixerius/proxmox-qdevice:latest
-          ghcr.io/unixerius/proxmox-qdevice:latest
+          ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+          ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
 
     - name: Docker Scout
       id: docker-scout
