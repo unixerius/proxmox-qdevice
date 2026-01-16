@@ -78,7 +78,7 @@ jobs:
       uses: docker/scout-action@v1
       with:
         #command: quickview,cves,recommendations
-        command: cves,recommendations
+        command: quickview,cves
         image: ghcr.io/unixerius/proxmox-qdevice:latest
         ignore-unchanged: true
         only-severities: critical,high,medium
