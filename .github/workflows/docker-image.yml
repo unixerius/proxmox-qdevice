@@ -25,7 +25,6 @@ jobs:
     strategy:
       matrix:
         debianver: [bookworm, trixie]
-        platforms: [linux/amd64, linux/arm64]
       fail-fast: false
 
     permissions:
@@ -90,8 +89,8 @@ jobs:
         sbom: true
         platforms: ${{env.platforms}}
         file: Dockerfile-${{matrix.debianver}}
-        #tags: ${{ steps.meta.outputs.tags }}
-        tags: |
-          ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
-          ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+        tags: ${{ steps.meta.outputs.tags }}
+        #tags: |
+        #  ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+        #  ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
 
