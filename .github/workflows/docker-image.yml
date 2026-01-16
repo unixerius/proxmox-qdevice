@@ -1,6 +1,10 @@
 name: Docker Image CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master, testing]
+  pull-request:
+    branches: [master, testing]
 
 jobs:
 
@@ -28,6 +32,6 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         push: false
-        tabs: unixerius/proxmox-qdevice:latest
+        tags: unixerius/proxmox-qdevice:latest
         platforms: linux/amd64,linux/arm64
 
