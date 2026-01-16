@@ -13,7 +13,7 @@ Run this container on a device that is *NOT* a virtual instance on one of your p
 
 ## Provenance:
 
-This container image is based on Docker's Debian DHI (*Docker Hardened Image*), i.e. it is supposed to be a more secure variant of a Debian container. At the time of writing, this is based upon Debian 13 (Trixie).
+This container image is based on Debian's "slim" images, for both Trixie (13) and Bookworm (12).
 
 The QDevice software is installed from Debian's own software repositories.
 
