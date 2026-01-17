@@ -10,7 +10,7 @@ Modify the docker-compose.yml file.   Make sure to change:
 
 * Environment Variable NEW_ROOT_PASSWORD.
 * Location of your corosync-data (so you can keep your configuration between restarts, etc.).
-* Hostname .
+* Hostname.
 * Local network information.
    parent (the ethernet device to bind macvlan)  
    ipv4_address  
@@ -25,6 +25,21 @@ You can either run the command:
 `docker compose up -d`
 
 Or cut and paste the docker-compose.yml into portainer.io as a stack and then deploy.
+
+The very first time that you run the container, this will _seemingly_ fail. It runs, but corosync-qnetd will fail to start. Refer to [issue 5](https://github.com/unixerius/proxmox-qdevice/issues/5), or the "Completing setup" section below.
+
+## Completing setup:
+
+1. Build your Proxmox cluster.
+2. Run the `proxmox-qdevice` container via Docker Compose.
+
+Then fFollow the [setup instructions on the Proxmox site](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support), which means:
+
+3. Install the `corosync-qdevice` package on all real cluster nodes.
+4. Ensure that all cluster nodes can SSH to the container; I did `ssh_copy_id root@${qdeviceIP}`.
+5. Run `pvecm qdevice setup ${IPAddress}` on one of the real cluster nodes.
+6. Once that is done, restart the `proxmox-qdevice` container. This time, corosync-qnetd will startup correctly as it now has a full database and configuration.
+
 
 ## Security Implications:
 
