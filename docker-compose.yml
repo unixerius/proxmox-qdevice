@@ -1,7 +1,7 @@
 services:
   qnetd:
     container_name: proxmox-qdevice
-    image: unixerius/proxmox-qdevice:latest
+    image: unixerius/proxmox-qdevice:trixie
     build: .
     ports:
       - "22:22"
