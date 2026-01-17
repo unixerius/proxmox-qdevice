@@ -2,7 +2,7 @@ name: Docker Scout testing of the container images
 
 on:
   schedule:
-    - cron: "* * * * 1"
+    - cron: "0 5 * * 1"
 
 env:
   registry: unixerius
