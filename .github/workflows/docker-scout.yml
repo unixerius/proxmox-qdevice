@@ -45,7 +45,18 @@ jobs:
         username: ${{ secrets.DHI_USER }}
         password: ${{ secrets.DHI_TOKEN }}
 
-    - name: Docker Scout
+    - name: Docker Scout against Docker Hub
+      id: docker-scout
+      uses: docker/scout-action@v1
+      with:
+        command: quickview,cves,recommendations
+        image: ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
+        ignore-unchanged: true
+        only-severities: critical,high
+        dockerhub-user: ${{ secrets.DHI_USER }}
+        dockerhub-password: ${{ secrets.DHI_TOKEN }}
+
+    - name: Docker Scout against GHCR
       id: docker-scout
       uses: docker/scout-action@v1
       with:
