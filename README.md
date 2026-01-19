@@ -1,8 +1,6 @@
 # Proxmox Qdevice
 
-[![CodeQL](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql) [![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml)
-
-[![Docker Scout testing of the container images](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml/badge.svg)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml)
+[![CodeQL](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql) [![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml) [![Docker Scout vuln. scan](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml/badge.svg)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml)
 
 This repository allows you to build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allow you to configure a qdevice for an external vote.
 
