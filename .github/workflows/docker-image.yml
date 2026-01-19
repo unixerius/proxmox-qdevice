@@ -3,9 +3,9 @@ name: Docker Image CI
 on:
   push:
     branches: [master, testing]
-  paths:
-    - Dockerfile-bookworm
-    - Dockerfile-trixie
+    paths:
+      - Dockerfile-bookworm
+      - Dockerfile-trixie
   pull_request:
     branches: [master, testing]
   schedule:
