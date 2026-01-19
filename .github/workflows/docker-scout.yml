@@ -1,4 +1,4 @@
-name: Docker Scout testing of the container images
+name: Docker Scout vulnerability scan
 
 on:
   schedule:
