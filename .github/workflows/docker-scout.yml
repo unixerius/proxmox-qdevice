@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DHI_TOKEN }}
 
     - name: Docker Scout against Docker Hub
-      id: docker-scout
+      id: docker-scout-dh
       uses: docker/scout-action@v1
       with:
         command: quickview,cves,recommendations
@@ -57,7 +57,7 @@ jobs:
         dockerhub-password: ${{ secrets.DHI_TOKEN }}
 
     - name: Docker Scout against GHCR
-      id: docker-scout
+      id: docker-scout-ghcr
       uses: docker/scout-action@v1
       with:
         command: quickview,cves,recommendations
