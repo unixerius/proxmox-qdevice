@@ -32,5 +32,5 @@ jobs:
         username: ${{ secrets.DHI_USER }}
         password: ${{ secrets.DHI_TOKEN }}
         repository: unixerius/proxmox-qdevice
-        short-description: "Cross-platform container image for the Corosync Quorum Device (QDevice), based on modern hardened parent images."
+        short-description: "Cross-platform container image for the Corosync Quorum Device (QDevice), with regular updates."
 
