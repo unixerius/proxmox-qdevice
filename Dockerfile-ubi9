@@ -1,0 +1,16 @@
+FROM redhat/ubi9-init
+
+RUN yum update -y \
+    && yum install -y openssh-server \
+    && yum clean all \
+    && systemctl enable sshd \
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+COPY set_root_password.sh /usr/local/bin/set_root_password.sh
+
+RUN chown root:root /usr/local/bin/set_root_password.sh \
+    && chmod 755 /usr/local/bin/set_root_password.sh
+
+EXPOSE 22
+EXPOSE 5403
+
