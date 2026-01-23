@@ -1,5 +1,5 @@
-#FROM dhi.io/debian-base:bookworm
 FROM debian:bookworm-slim
+#FROM dhi.io/debian-base:bookworm
 
 RUN apt update \
     && apt -y upgrade \
