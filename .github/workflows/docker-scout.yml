@@ -47,7 +47,7 @@ jobs:
 
     - name: Docker Scout against Docker Hub
       id: docker-scout
-      uses: docker/scout-action@v1
+      uses: docker/scout-action@v1.18.2
       with:
         command: quickview,cves,recommendations
         image: ${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
@@ -58,7 +58,7 @@ jobs:
 
     - name: Docker Scout against GHCR
       id: docker-scout
-      uses: docker/scout-action@v1
+      uses: docker/scout-action@v1.18.2
       with:
         command: quickview,cves,recommendations
         image: ghcr.io/${{ env.registry }}/${{ env.image }}:${{matrix.debianver}}
