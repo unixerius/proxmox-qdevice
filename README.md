@@ -8,6 +8,8 @@ For more information on proxmmox clusters, external qdevices, and how to configu
 
 Run this container on a device that is *NOT* a virtual instance on one of your proxmox servers.
 
+For full instructions on how to use and configure this container, please refer to [USAGE.md](https://github.com/unixerius/proxmox-qdevice/blob/master/USAGE.md).
+
 
 ## Provenance:
 
@@ -18,6 +20,11 @@ The QDevice software is installed from Debian's own software repositories.
 The image contains a shell script and a Supervisord configuration created by this project's original author. This project is a fork of [bcleonard/proxmox-qdevice](https://github.com/bcleonard/proxmox-qdevice).
 
 Why a fork? The upstream project hasn't had an update in a year and it lacks weekly builds of the parent image, thus opening up your environment to long-lived vulnerabilities. 
+
+
+## Tested on:
+
+I have used this container image successfully with Proxmox 9.x and with Docker on Synology DSM 7.x.
 
 
 ## Acknowledgements:
