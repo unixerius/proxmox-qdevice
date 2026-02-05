@@ -7,10 +7,11 @@ services:
       - "22:22"
       - "5403:5403"
     environment:
-      - VAR=example
+      - NEW_ROOT_PASSWORD=<SET A SECURE VALUE HERE>
     volumes:
       - /run/sshd
-      - <MY LOCAL STORAGE>:/etc/corosync
+      - <MY LOCAL STORAGE>/corosync:/etc/corosync
+      - <MY LOCAL STORAGE>/roothome:/root
     restart: unless-stopped
     hostname: <MY FQDN>
     networks: 
