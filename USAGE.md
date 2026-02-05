@@ -9,7 +9,8 @@ This container is designed to run from either Docker Compose or a container mana
 Modify the docker-compose.yml file.   Make sure to change:
 
 * Environment Variable NEW_ROOT_PASSWORD.
-* Location of your corosync-data (so you can keep your configuration between restarts, etc.).
+* Location of your corosync-data (to retain configuration across restarts, etc.).
+* Location of your root homedir (to retain Proxmox SSH keys in authorized_keys).
 * Hostname.
 * Local network information.
    parent (the ethernet device to bind macvlan)  
@@ -17,6 +18,14 @@ Modify the docker-compose.yml file.   Make sure to change:
    subnet  
    ip_range  
    gateway
+
+In the location for your persistent storage, make sure to create the directories for the root homedir and the corosync-data.
+
+### Special note for Synology
+
+For the storage location of "corosync-data" and "roothome", DO NOT use a path in /opt, /usr etc. Create a separate directory for proxmox-qdevice under one of your storage volumes.
+
+Directories like /opt get erased across Synology DSM updates. Ask me how I know. ;)
 
 ## Running / Deploying:
 
