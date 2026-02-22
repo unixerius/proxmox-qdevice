@@ -89,7 +89,7 @@ jobs:
       uses: docker/build-push-action@v6
       with:
         push: ${{ vars.IMAGEPUSH }}
-        provenance: mode=max
+        provenance: mode=max,version=v1
         sbom: true
         platforms: ${{env.platforms}}
         file: Dockerfile-${{matrix.debianver}}
