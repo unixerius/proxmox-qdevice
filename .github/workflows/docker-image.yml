@@ -85,6 +85,7 @@ jobs:
           latest=auto
 
     - name: Build and push the Docker image
+      id: docker_build
       if: ${{ github.actor != 'dependabot[bot]' && github.event_name != 'pull_request' }}
       uses: docker/build-push-action@v6
       with:
@@ -97,4 +98,38 @@ jobs:
         tags: |
           ${{env.registry}}/${{env.image}}:${{matrix.debianver}}
           ghcr.io/${{env.registry}}/${{env.image}}:${{matrix.debianver}}
+
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }}
+
+  provenance-dockerhub:
+    needs: [build]
+    if: ${{ vars.IMAGEPUSH == 'true' }}
+    permissions:
+      actions: read # for detecting the Github Actions environment.
+      id-token: write # for creating OIDC tokens for signing.
+      packages: write # for uploading attestations.
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
+    with:
+      image: ${{ needs.build.outputs.tag }}
+      digest: ${{ needs.build.outputs.digest }}
+    secrets:
+      registry-username: ${{ secrets.DHI_USER }}
+      registry-password: ${{ secrets.DHI_TOKEN }}
+
+  provenance-gcr:
+    needs: [build]
+    if: ${{ vars.IMAGEPUSH == 'true' }}
+    permissions:
+      actions: read # for detecting the Github Actions environment.
+      id-token: write # for creating OIDC tokens for signing.
+      packages: write # for uploading attestations.
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
+    with:
+      image: ${{ needs.build.outputs.tag }}
+      digest: ${{ needs.build.outputs.digest }}
+    secrets:
+      registry-username: ${{ github.actor }}
+      registry-password: ${{ secrets.GITHUB_TOKEN }}
+
 
