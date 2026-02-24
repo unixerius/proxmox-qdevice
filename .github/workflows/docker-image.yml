@@ -113,8 +113,8 @@ jobs:
     with:
       image: ${{ needs.build.outputs.tag }}
       digest: ${{ needs.build.outputs.digest }}
-    secrets:
       registry-username: ${{ secrets.DHI_USER }}
+    secrets:
       registry-password: ${{ secrets.DHI_TOKEN }}
 
   provenance-gcr:
@@ -128,8 +128,8 @@ jobs:
     with:
       image: ${{ needs.build.outputs.tag }}
       digest: ${{ needs.build.outputs.digest }}
-    secrets:
       registry-username: ${{ github.actor }}
+    secrets:
       registry-password: ${{ secrets.GITHUB_TOKEN }}
 
 
