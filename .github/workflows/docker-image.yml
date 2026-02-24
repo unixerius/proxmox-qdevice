@@ -112,14 +112,3 @@ jobs:
         registry-username: ${{ secrets.DHI_USER }}
         registry-password: ${{ secrets.DHI_TOKEN }}
 
-    - name: Provenance for GCR
-      if: ${{ vars.IMAGEPUSH == 'true' }}
-      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v2.1.0
-      with:
-        image: ${{ steps.docker_build.outputs.tag }}
-        digest: ${{ steps.docker_build.outputs.digest }}
-      secrets:
-        registry-username: ${{ github.actor }}
-        registry-password: ${{ secrets.GITHUB_TOKEN }}
-
-
