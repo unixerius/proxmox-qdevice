@@ -102,34 +102,24 @@ jobs:
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
-  provenance-dockerhub:
-    needs: [build]
-    if: ${{ vars.IMAGEPUSH == 'true' }}
-    permissions:
-      actions: read # for detecting the Github Actions environment.
-      id-token: write # for creating OIDC tokens for signing.
-      packages: write # for uploading attestations.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
-    with:
-      image: ${{ needs.build.outputs.tag }}
-      digest: ${{ needs.build.outputs.digest }}
-      registry-username: ${{ secrets.DHI_USER }}
-    secrets:
-      registry-password: ${{ secrets.DHI_TOKEN }}
+    - name: Provenance for Docker Hub
+      if: ${{ vars.IMAGEPUSH == 'true' }}
+      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
+      with:
+        image: ${{ steps.docker_build.outputs.tag }}
+        digest: ${{ steps.docker_build.outputs.digest }}
+      secrets:
+        registry-username: ${{ secrets.DHI_USER }}
+        registry-password: ${{ secrets.DHI_TOKEN }}
 
-  provenance-gcr:
-    needs: [build]
-    if: ${{ vars.IMAGEPUSH == 'true' }}
-    permissions:
-      actions: read # for detecting the Github Actions environment.
-      id-token: write # for creating OIDC tokens for signing.
-      packages: write # for uploading attestations.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
-    with:
-      image: ${{ needs.build.outputs.tag }}
-      digest: ${{ needs.build.outputs.digest }}
-      registry-username: ${{ github.actor }}
-    secrets:
-      registry-password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Provenance for GCR
+      if: ${{ vars.IMAGEPUSH == 'true' }}
+      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.4.0
+      with:
+        image: ${{ steps.docker_build.outputs.tag }}
+        digest: ${{ steps.docker_build.outputs.digest }}
+      secrets:
+        registry-username: ${{ github.actor }}
+        registry-password: ${{ secrets.GITHUB_TOKEN }}
 
 
