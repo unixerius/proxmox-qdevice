@@ -1,10 +1,12 @@
 FROM redhat/ubi9-init
 
+ENV container=docker
+
 RUN yum update -y \
     && yum install -y openssh-server \
     && yum clean all \
     && systemctl enable sshd \
-    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+    && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config 
 
 COPY set_root_password.sh /usr/local/bin/set_root_password.sh
 
@@ -14,3 +16,4 @@ RUN chown root:root /usr/local/bin/set_root_password.sh \
 EXPOSE 22
 EXPOSE 5403
 
+CMD [ "/sbin/init" ]
