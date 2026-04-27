@@ -1,12 +1,14 @@
 # Proxmox Qdevice
 
-[![CodeQL](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql) [![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml) [![Docker Scout vuln. scan](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml/badge.svg)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml)
+[![CodeQL](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/github-code-scanning/codeql) [![Docker Image CI](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-image.yml) [![Docker Scout vuln. scan](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml/badge.svg)](https://github.com/unixerius/proxmox-qdevice/actions/workflows/docker-scout.yml)[![SLSA 3](https://slsa.dev/images/gh-badge-level1.svg)](https://slsa.dev)
 
 This repository allows you to build and deploy a docker container for use with a proxmox cluster as an external qdevice.  Properly configured proxmox clusters require an odd number servers in the cluster.   In the event that you have an even number of proxmox servers (like 2, such as I have), you need an another device to vote.   Proxmox supports this by allowing you to configure a qdevice for an external vote.
 
 For more information on proxmmox clusters, external qdevices, and how to configure/use them, go [here](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support).
 
 Run this container on a device that is *NOT* a virtual instance on one of your proxmox servers.
+
+For full instructions on how to use and configure this container, please refer to [USAGE.md](https://github.com/unixerius/proxmox-qdevice/blob/master/USAGE.md).
 
 
 ## Provenance:
@@ -18,6 +20,11 @@ The QDevice software is installed from Debian's own software repositories.
 The image contains a shell script and a Supervisord configuration created by this project's original author. This project is a fork of [bcleonard/proxmox-qdevice](https://github.com/bcleonard/proxmox-qdevice).
 
 Why a fork? The upstream project hasn't had an update in a year and it lacks weekly builds of the parent image, thus opening up your environment to long-lived vulnerabilities. 
+
+
+## Tested on:
+
+I have used this container image successfully with Proxmox 9.x and with Docker on Synology DSM 7.x.
 
 
 ## Acknowledgements:
