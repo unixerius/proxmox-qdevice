@@ -6,8 +6,6 @@ on:
     paths:
       - Dockerfile-bookworm
       - Dockerfile-trixie
-  pull_request:
-    branches: [master, testing]
   schedule:
     - cron: "0 0 * * 6"
   workflow_dispatch:
