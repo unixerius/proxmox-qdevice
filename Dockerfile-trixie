@@ -7,18 +7,26 @@ RUN apt update \
     && apt -y autoremove \
     && apt clean all
 
-# Proxmox relies upon SSH between cluster nodes using the root account.
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-COPY set_root_password.sh /usr/local/bin/set_root_password.sh
-RUN chown root:root /usr/local/bin/set_root_password.sh \
-    && chmod 755 /usr/local/bin/set_root_password.sh
+# Disable password auth and only allow keys
+RUN sed -i 's/#PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config \
+    && sed -i 's/#PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
 
-RUN mkdir -p /run/sshd
+# Copy the SSH initialization script
+COPY init_ssh.sh /usr/local/bin/init_ssh.sh
+RUN chown root:root /usr/local/bin/init_ssh.sh \
+    && chmod 755 /usr/local/bin/init_ssh.sh
+
+RUN mkdir -p /run/sshd /root/.ssh \
+    && chmod 700 /root/.ssh
 
 COPY supervisord.conf /etc/supervisord.conf
 
 EXPOSE 22
 EXPOSE 5403
 
+# Run the initialization script first
+ENTRYPOINT ["/usr/local/bin/init_ssh.sh"]
+
+# Pass Supervisord as the command to be executed by the entrypoint
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 

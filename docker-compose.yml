@@ -2,14 +2,24 @@ services:
   qnetd:
     container_name: proxmox-qdevice
     image: unixerius/proxmox-qdevice:trixie
-    build: .
+    build: 
+      context: .
+      # To build remove the comment from the line below.
+      #dockerfile: Dockerfile-trixie
+
+    # Ports mapping is not needed for a macvlan network. Only if macvlan is not used to get a separate IP.
     ports:
       - "22:22"
       - "5403:5403"
     environment:
-      - NEW_ROOT_PASSWORD=<SET A SECURE VALUE HERE>
+    # This pulls the string directly from the .env file
+    # It can be multiline with quotes
+      - PROXMOX_PUB_KEY=${PROXMOX_PUB_KEY}
+      - TZ=Europe/Paris
+      - NEW_ROOT_PASSWORD=${NEW_ROOT_PASSWORD}
     volumes:
-      - /run/sshd
+      # Removed sshd volume to avoid issues with possible changes in the ssh files in future debian releases.
+      # The SSH host keys are copied to a backup folder in /root/.ssh/host_keys, then copied back to the ssh folder if they are detected.
       - <MY LOCAL STORAGE>/corosync:/etc/corosync
       - <MY LOCAL STORAGE>/roothome:/root
     restart: unless-stopped
@@ -18,8 +28,13 @@ services:
       vlan:
         ipv4_address: <MY IP ADDRESS>
 
+# If you want to use named volumes, remove the comments below. and Remove "<MY LOCAL STORAGE>/" from the volumes above.
+#volumes:
+#  corosync:
+#  roothome:
+
 networks:
- vlan:
+  vlan:
     driver: macvlan
     driver_opts:
       parent: <MY ETHERNET DEVICE>
