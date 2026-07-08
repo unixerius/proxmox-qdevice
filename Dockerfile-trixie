@@ -24,5 +24,9 @@ COPY supervisord.conf /etc/supervisord.conf
 EXPOSE 22
 EXPOSE 5403
 
+# Run the initialization script first
+ENTRYPOINT ["/usr/local/bin/init_ssh.sh"]
+
+# Pass Supervisord as the command to be executed by the entrypoint
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 

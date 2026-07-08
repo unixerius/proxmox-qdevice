@@ -17,6 +17,20 @@ if [ ! -z "$PROXMOX_PUB_KEY" ]; then
     chmod 600 /root/.ssh/authorized_keys
 fi
 
+# --- Handle Passwords ---
+if [ ! -z "$NEW_ROOT_PASSWORD" ]; then
+    log_info "Password environment variable found. Setting root password and enabling password auth..."
+    echo "root:${NEW_ROOT_PASSWORD}" | chpasswd
+
+    # Dynamically rewrite sshd_config to allow password logins
+    sed -i 's/.*PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+else
+    log_info "No password variable found. Enforcing strict key-based authentication."
+    sed -i 's/.*PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+    sed -i 's/.*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+fi
+
 # --- Handle the Host Keys ---
 ssh-keygen -A
 
@@ -30,3 +44,9 @@ else
     cp /root/.ssh/host_keys/ssh_host_* /etc/ssh/
     chmod 600 /etc/ssh/ssh_host_*_key
 fi
+
+log_info "Initialization complete. Handing over to Supervisord..."
+
+# --- 4. Execute the Docker CMD ---
+# This line is crucial. It executes Supervisord and makes it PID 1.
+exec "$@"

@@ -8,6 +8,9 @@ This container is designed to run from either Docker Compose or a container mana
 
 Modify the docker-compose.yml file.   Make sure to change:
 
+* If you want to use a password login : environement variable `NEW_ROOT_PASSWORD`.
+* If you want to use ssh key login : environement variable `PROXMOX_PUB_KEY`.
+* To change the variables above, see the instructions under this list, or see Security implications at the bottom.
 * Environment variable TZ : change Europe/Paris with your timezone (sets the right time for logs).
 * Location of your corosync-data (to retain configuration across restarts, etc.).
 * Location of your root homedir (to retain Proxmox SSH keys in authorized_keys).
@@ -20,6 +23,8 @@ Modify the docker-compose.yml file.   Make sure to change:
    gateway
 
 Copy the `.env.example` file as `.env` and edit it to put your public ssh keys to allow the proxmox nodes to connect to the qdevice (the qdevice does not need to connect to the nodes through ssh). One ssh key per line.
+
+For password login, you can add a password after `NEW_ROOT_PASSWORD=`. If you leave it blank, it will be considered unset, and password login will stay disabled.
 
 If you are defining, the ssh keys directly in the compose instead, you can use the pipe : 
 ```yaml
@@ -65,7 +70,7 @@ Then you can run the command :
 1. Build your Proxmox cluster.
 2. Run the `proxmox-qdevice` container via Docker Compose.
 
-Then fFollow the [setup instructions on the Proxmox site](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support), which means:
+Then Follow the [setup instructions on the Proxmox site](https://pve.proxmox.com/wiki/Cluster_Manager#_corosync_external_vote_support), which means:
 
 3. Install the `corosync-qdevice` package on all real cluster nodes.
 4. Ensure that all cluster nodes can SSH to the container; I did `ssh_copy_id root@${qdeviceIP}`.
@@ -75,10 +80,14 @@ Then fFollow the [setup instructions on the Proxmox site](https://pve.proxmox.co
 
 ## Security Implications:
 
-This container installs and configures a sshd server that permits root logins.  Proxmox runs in the same configuration.  Upon startup, if the environment variable **PROXMOX_PUB_KEY** exists the ssh keys will be set in the authorized_hosts, allowing a login.   You can specify what the ssh keys should be by setting the value of **PROXMOX_PUB_KEY** to the public ssh keys in one of the following ways:
+This container installs and configures a sshd server that permits root logins.
 
-1) If you are using a container manager, such as portainer, set the environment variable **PROXMOX_PUB_KEY** to your specified ssh keys.  This variable should get passed to the container. (Not sure if this works with more than 1  public key).
-2) Follow one of the Docker provided ways documented in how to ["Set environment variables within your container's environment"](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/).  Please note that one of the ways described is setting the ssh keys in the docker-compose.yml (or the stack) in the environment section (i.e. hardcoding it).   If you hardcode the ssh keys like this, you can expose the keys. It is however, less critical than exposing a password, as it's not private keys.
+Using an SSH public key for login is the safest method, you can define it using the varialbe **PROXMOX_PUB_KEY**. If it leaks, it won't be great, but it won't be too bad either. The same methods can be used to set this variable as for the password environement variable.
+
+However, Upon startup, if the environment variable **NEW_ROOT_PASSWORD** exists (not empty), the root password will be set to the value of that variable upon boot and password login will be enabled. You can specify what the root password should be setting the value of **NEW_ROOT_PASSWORD** to a password in one of the following ways:
+
+1) If you are using a container manager, such as portainer, set the environment variable NEW_ROOT_PASSWORD to your specified root password. This variable should get passed to the container.
+2) Follow one of the Docker provided ways documented in how to ["Set environment variables within your container's environment"](https://docs.docker.com/compose/how-tos/environment-variables/set-environment-variables/).  Please note that one of the ways described is setting the ssh keys in the docker-compose.yml (or the stack) in the environment section (i.e. hardcoding it). If you hardcode the password like this, you can expose the password. You have been warned.
 
 Please note that all of the ways listed above to set the environment above should survive the recreation of the container.
 

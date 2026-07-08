@@ -16,6 +16,7 @@ services:
     # It can be multiline with quotes
       - PROXMOX_PUB_KEY=${PROXMOX_PUB_KEY}
       - TZ=Europe/Paris
+      - NEW_ROOT_PASSWORD=${NEW_ROOT_PASSWORD}
     volumes:
       # Removed sshd volume to avoid issues with possible changes in the ssh files in future debian releases.
       # The SSH host keys are copied to a backup folder in /root/.ssh/host_keys, then copied back to the ssh folder if they are detected.
